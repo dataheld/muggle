@@ -15,6 +15,7 @@ can_push := false
 export CAN_PUSH=$(can_push)
 bake_targets := "builder" "developer"
 smoke_test_jobs := $(addprefix smoke-test-,${bake_targets})
+gh_token ?= $(shell gh auth token || echo ${GITHUB_PAT})
 
 .PHONY: all
 all: bake
@@ -22,12 +23,14 @@ all: bake
 .PHONY: bake
 ## Build all docker images
 bake:
+	GH_TOKEN=$(gh_token) \
 	docker buildx bake \
 		--file docker-bake.hcl \
 		--file .env \
 		$(bake_args)
 
 bake-multiarch-cache:
+	GH_TOKEN=$(gh_token) \
 	CAN_CACHE=true \
 		docker buildx bake \
 			--file docker-bake.hcl \
@@ -37,6 +40,34 @@ bake-multiarch-cache:
 			$(bake_args)
 
 .DEFAULT_GOAL := show-help
+
+.PHONY: rdeps
+## Install R package dependencies
+rdeps: rdeps-hard
+	Rscript -e \
+		"pak::local_install_deps()"
+
+rdeps-hard: DESCRIPTION
+	Rscript -e \
+		"pak::local_install_deps(dependencies = TRUE)"
+
+.PHONY: install
+## Install R package
+install: roxygenise
+	Rscript \
+		-e "pak::local_install()"
+
+.PHONY: roxygenise
+## Run roxygen
+# hack is the easiest crossplatform way I could think of;
+# sed -i won't play nice with macOS
+# needs to run twice under some circumstances
+roxygenise:
+	Rscript -e "roxygen2::roxygenise()"
+	Rscript -e "roxygen2::roxygenise()"
+	grep -v '^RoxygenNote:' DESCRIPTION > DESCRIPTION_clean
+	rm DESCRIPTION
+	mv DESCRIPTION_clean DESCRIPTION
 
 # from https://gist.github.com/klmr/575726c7e05d8780505a
 .PHONY: show-help

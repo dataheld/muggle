@@ -4,6 +4,7 @@
 !/.github/library/***
 !/builder_img/**
 !/DESCRIPTION
+!/Makefile
 !/NAMESPACE
 !/LICENSE
 !/LICENSE.md

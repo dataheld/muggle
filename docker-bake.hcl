@@ -60,6 +60,8 @@ function "compose_cache_from_field" {
 
 group "default" {
   targets = [
+    "builder",
+    "developer",
     "runner"
   ]
 }
@@ -79,6 +81,8 @@ target "default" {
   inherits = [
     "docker-metadata-action"
   ]
+  dockerfile = "onbuild.Dockerfile"
+  secret = ["id=GH_TOKEN"]
   // multiplatform build does not work with output docker
   // see https://github.com/docker/buildx/issues/59
   platforms = or(CAN_PUSH, CAN_CACHE) ? ["linux/amd64,linux/arm64"] : []
@@ -89,11 +93,20 @@ target "runner" {
   inherits = [
     "default"
   ]
-  dockerfile = "onbuild.Dockerfile"
   target = "runner"
   cache-from = compose_cache_from_field("runner")
   cache-to = compose_cache_to_field("runner")
   tags = compose_tags_field("runner")
+}
+
+target "builder" {
+  inherits = [
+    "default"
+  ]
+  target = "builder"
+  cache-from = compose_cache_from_field("builder")
+  cache-to = compose_cache_to_field("builder")
+  tags = compose_tags_field("builder")
 }
 
 target "developer" {
