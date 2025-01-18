@@ -1,0 +1,14 @@
+---
+services:
+  super-linter:
+    # version needs to be in sync with version in .github/*.yml
+    image: ghcr.io/super-linter/super-linter:slim-v7.2.1
+    environment:
+      - RUN_LOCAL=true
+      # fix for amd64 bug as per https://github.com/super-linter/super-linter/issues/5070
+      - SHELL=/bin/bash
+    platform: linux/amd64
+    env_file:
+      - ./super-linter.env
+    volumes:
+      - .:/tmp/lint

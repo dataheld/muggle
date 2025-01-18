@@ -1,0 +1,3 @@
+#!make
+
+include .muggle/Makefile

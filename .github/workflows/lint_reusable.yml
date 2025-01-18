@@ -1,0 +1,27 @@
+---
+name: Lint
+on: workflow_call
+permissions:
+  contents: read
+  checks: write
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+      - name: Load super-linter configuration
+        # source
+        # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
+        run: grep -v '^#' super-linter.env >> "$GITHUB_ENV"
+      - name: Lint Code Base
+        # must be in sync with version in compose file
+        uses: super-linter/super-linter@v7.2.1
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
