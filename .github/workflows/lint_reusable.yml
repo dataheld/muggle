@@ -18,7 +18,7 @@ jobs:
       - name: Load super-linter configuration
         # source
         # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
-        run: grep -v '^#' super-linter.env >> "$GITHUB_ENV"
+        run: grep -v '^#' .muggle/super-linter.env >> "$GITHUB_ENV"
       - name: Lint Code Base
         # must be in sync with version in compose file
         uses: super-linter/super-linter@v7.2.1
