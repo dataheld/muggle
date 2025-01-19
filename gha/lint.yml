@@ -1,0 +1,12 @@
+---
+name: Lint
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+  checks: write
+jobs:
+  lint:
+    name: Lint
+    uses: dataheld/muggle/.github/workflows/lint_reusable.yml@v2
