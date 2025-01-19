@@ -15,6 +15,7 @@ jobs:
           # super-linter needs the full git history to get the
           # list of files that changed across commits
           fetch-depth: 0
+          submodules: true
       - name: Load super-linter configuration
         # source
         # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
