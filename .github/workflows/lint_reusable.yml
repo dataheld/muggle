@@ -16,6 +16,11 @@ jobs:
           # list of files that changed across commits
           fetch-depth: 0
           submodules: true
+      - name: Install Muggle (if this isn't Muggle)
+        run: |
+          if [ "$GITHUB_REPOSITORY" != "dataheld/muggle" ]; then
+            muggle/install.sh
+          fi
       - name: Load super-linter configuration
         # source
         # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
