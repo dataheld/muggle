@@ -5,7 +5,7 @@ devops package
 ## Installation
 
 ```sh
-cp post-checkout.sample .git/hooks/post-checkout
-chmod +x .git/hooks/post-checkout
-sh .git/hooks/post-checkout
+cp -f muggle/post-checkout.sample .git/modules/muggle/hooks/post-checkout
+chmod +x .git/modules/muggle/hooks/post-checkout
+sh muggle/install.sh
 ```
