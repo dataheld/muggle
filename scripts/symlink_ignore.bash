@@ -9,20 +9,20 @@ target=""
 # Parse command line options
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --source)
-      source="$2"
-      shift # past argument
-      shift # past value
-      ;;
-    --target)
-      target="$2"
-      shift # past argument
-      shift # past value
-      ;;
-    *)
-      echo "Unknown option: $1"
-      exit 1
-      ;;
+  --source)
+    source="$2"
+    shift # past argument
+    shift # past value
+    ;;
+  --target)
+    target="$2"
+    shift # past argument
+    shift # past value
+    ;;
+  *)
+    echo "Unknown option: $1"
+    exit 1
+    ;;
   esac
 done
 
@@ -36,8 +36,8 @@ original_dir=$(pwd)
 cd ..
 
 ln -f -s "muggle/$source" "$target"
-git check-ignore --quiet "$target" || \
+git check-ignore --quiet "$target" ||
   echo $'# Muggle symlink\n'"$target" >> \
-  .gitignore
+    .gitignore
 
 cd "$original_dir" || exit
