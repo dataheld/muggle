@@ -1,14 +1,16 @@
 #!/bin/bash
 echo "(Re-)Installing Muggle..."
-# Change to the directory where the script resides
-cd "$(dirname "$0")"
+# Change to the directory where the script resides, exit if it fails
+cd "$(dirname "$0")" || exit
 
 echo "(Over-)writing GitHub Actions workflow files ..."
 cp -f gha/lint.yml ../.github/workflows/lint.yml
 
 echo "(Re-)creating Symbolic Links ..."
 
-./scripts/symlink_ignore.bash --source in_submodule.make --target Makefile
+./scripts/symlink_ignore.bash \
+  --source in_submodule.make \
+  --target Makefile
 ./scripts/symlink_ignore.bash \
   --source docker-compose.yml \
   --target docker-compose.yml

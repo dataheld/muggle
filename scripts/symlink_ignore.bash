@@ -8,28 +8,28 @@ target=""
 
 # Parse command line options
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        --source)
-            source="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        --target)
-            target="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        *)
-            echo "Unknown option: $1"
-            exit 1
-            ;;
-    esac
+  case $1 in
+    --source)
+      source="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    --target)
+      target="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
 done
 
 # Check if required arguments were provided
 if [ -z "$source" ] || [ -z "$target" ]; then
-    echo "Usage: $0 --source <source> --target <target>"
-    exit 1
+  echo "Usage: $0 --source <source> --target <target>"
+  exit 1
 fi
 
 original_dir=$(pwd)
