@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if we are in a submodule
+if git rev-parse --show-superproject-working-tree > /dev/null 2>&1; then
+    # We're in a submodule. Get the submodule's working directory
+    SUBMODULE_ROOT="$(git rev-parse --show-toplevel)"
+else
+    # We're in a normal repo
+    SUBMODULE_ROOT="$(pwd)"
+fi
+
+# Path to install.sh relative to the repo/submodule root
+INSTALL_SCRIPT="$SUBMODULE_ROOT/install.sh"
+
+# Check if install.sh exists and is executable
+if [ -x "$INSTALL_SCRIPT" ]; then
+    # Run the install script with the arguments passed to the hook
+    "$INSTALL_SCRIPT" "$@"
+else
+    echo "Warning: install.sh not found or not executable at $INSTALL_SCRIPT" >&2
+fi
